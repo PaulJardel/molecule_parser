@@ -1,6 +1,6 @@
 import pytest
 
-from molecular.molecule_parser import MoleculeParser
+from molecular.molecule_parser_alpha import MoleculeParserAlpha
 
 
 def test__is_valid_parenthesis():
@@ -21,7 +21,7 @@ def test__is_valid_parenthesis():
     expected_wrong_format_molecule_2 = False
 
     # When
-    molecule_parser = MoleculeParser()
+    molecule_parser = MoleculeParserAlpha()
     result_water = molecule_parser._is_valid_parenthesis(molecule=water)
     result_magnesium_hydroxide = molecule_parser._is_valid_parenthesis(molecule=magnesium_hydroxide)
     result_fremy_salt = molecule_parser._is_valid_parenthesis(molecule=fremy_salt)
