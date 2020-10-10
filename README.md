@@ -22,7 +22,7 @@ https://gist.github.com/mlvernay/57ed73edfc875ecc11f1671481ce6b23
 │   ├── __init__.py
 │   ├── __pycache__
 │   ├── molecule_parser.py          # Class containing the final molecule parser
-│   ├── molecule_parser_alpha.py    # First class developed for contructing the molecule parser, from nowhere
+│   ├── molecule_parser_alpha.py    # First class developed for contructing the molecule parser
 │   ├── monitoring
 │   └── venv
 ├── requirements.txt
