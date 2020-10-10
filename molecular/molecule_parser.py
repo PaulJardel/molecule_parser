@@ -5,6 +5,7 @@ from molecular.monitoring.log import get_logger
 
 logger = get_logger()
 
+
 class MoleculeParser:
     """
     This class allows to parse molecules, and get the number of atoms that compose it.
@@ -39,39 +40,40 @@ class MoleculeParser:
 
         return atoms_dict
 
-    def parse_group(self, list_molecules_elements, atoms_dict, scale=1):
-        _scale = scale
+    def parse_group(self, list_molecules_elements, atoms_dict, parenthesis_multiplier=1):
+        _parenthesis_multiplier = parenthesis_multiplier
         starting_parenthesis_char = {"(", "{", "["}
         closing_parenthesis_char = {")", "}", "]"}
         for molecule_element in list_molecules_elements:
-            
-            # if molecule_element in closing_parenthesis_char:
-            #     # entering a parenthesis : we use the parenthesis_multiplier
 
             # entering a parenthesis : we use the parenthesis_multiplier
-            if molecule_element in '])}':
-                self.parse_group(list_molecules_elements=list_molecules_elements, atoms_dict=atoms_dict, scale=_scale)
+            if molecule_element in closing_parenthesis_char:
+                self.parse_group(
+                    list_molecules_elements=list_molecules_elements,
+                    atoms_dict=atoms_dict,
+                    parenthesis_multiplier=_parenthesis_multiplier)
             # exiting a parenthesis : we do not use the parenthesis_multiplier anymore
-            elif molecule_element in '([{':
+            elif molecule_element in starting_parenthesis_char:
                 break
             elif molecule_element.isdecimal():
-                _scale = scale * int(molecule_element)
+                _parenthesis_multiplier = parenthesis_multiplier * int(molecule_element)
                 continue
             elif molecule_element.isalpha():
-                atoms_dict[molecule_element] = atoms_dict.get(molecule_element, 0) + _scale
-            _scale = scale
+                atoms_dict[molecule_element] = atoms_dict.get(molecule_element, 0) + _parenthesis_multiplier
+            _parenthesis_multiplier = parenthesis_multiplier
         return atoms_dict
+
 
 if __name__ == '__main__':
     molecule_parser = MoleculeParser()
 
-    wrong_format_molecule  = '(Mg3[T)]'
+    wrong_format_molecule = '(Mg3[T)]'
     atoms_dict = molecule_parser.parse_molecule(molecule=wrong_format_molecule)
 
     water = 'H2O'
     atoms_dict = molecule_parser.parse_molecule(molecule=water)
 
-    magnesium_hydroxide  = '(Mg3[T2(Y)](OH)2)'
+    magnesium_hydroxide = '(Mg3[T2(Y)](OH)2)'
     atoms_dict = molecule_parser.parse_molecule(molecule=magnesium_hydroxide)
 
     fremy_salt = 'K4[ON(SO3)2]2'

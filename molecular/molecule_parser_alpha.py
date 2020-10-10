@@ -4,6 +4,7 @@ from molecular.monitoring.log import get_logger
 
 logger = get_logger()
 
+
 class MoleculeParserAlpha:
     """
     This class allows to parse molecules, and get the number of atoms that compose it.
@@ -11,15 +12,6 @@ class MoleculeParserAlpha:
     It is mainly string operations.
     See documentation used : https://docs.python.org/3/library/stdtypes.html
     """
-
-    tag_dict = {
-        "A": 1,
-        "B": 2,
-        "C": 3,
-        "D": 4,
-        "E": 5
-    }
-
 
     def parse_molecule(self, molecule: str) -> Dict[str, int]:
 
@@ -56,16 +48,18 @@ class MoleculeParserAlpha:
                 # get atom multiplier (= multiplier is the digit just after the atom name)
                 atom_multiplier = 1
                 # get atom multiplier for atoms with 1 char (for example O2 : multiplier = 2)
-                if(len(atom)==1 and molecule[index+1].isdigit()):
+                if(len(atom) == 1 and molecule[index+1].isdigit()):
                     atom_multiplier = int(molecule[index+1])
                 # get atom multiplier for atoms with 2 char (for example Mg3 : multiplier = 3)
-                if(len(atom)==2 and index<len(molecule)-2 and molecule[index+2].isdigit()):
+                if(len(atom) == 2 and index < len(molecule)-2 and molecule[index+2].isdigit()):
                     atom_multiplier = int(molecule[index+2])
 
                 # get parenthesis multiplier (= multiplier of all surrounding parenthesis)
                 parenthesis_multiplier = self._get_parenthesis_multiplier(molecule=molecule, current_index=index)
-                
-                logger.info(f'atom = {atom} / atom_multiplier = {atom_multiplier} / parenthesis_multiplier = {parenthesis_multiplier}')
+
+                logger.info(
+                    f'atom = {atom} / atom_multiplier = {atom_multiplier} '
+                    f'/ parenthesis_multiplier = {parenthesis_multiplier}')
 
                 # add/update atom on atom dictionary, with the good amount of atoms
                 if atom in atoms_dict:
@@ -73,7 +67,7 @@ class MoleculeParserAlpha:
                 else:
                     count_atom = 1
                 atoms_dict[atom] = count_atom * atom_multiplier * parenthesis_multiplier
-                
+
             # checking last character : we take into account only if it is an atom
             else:
                 logger.info(f'last character = {index} {character} {molecule[index]}')
@@ -84,7 +78,7 @@ class MoleculeParserAlpha:
                     else:
                         count_atom = 1
                     atoms_dict[atom] = count_atom
-        
+
         logger.info(f"Dictionary of atoms for '{molecule}' : {atoms_dict}\n")
         return atoms_dict
 
@@ -149,15 +143,15 @@ class MoleculeParserAlpha:
 
 
 if __name__ == '__main__':
-    molecule_parser = MoleculeParser()
+    molecule_parser = MoleculeParserAlpha()
 
-    wrong_format_molecule  = '(Mg3[T)]'
+    wrong_format_molecule = '(Mg3[T)]'
     atoms_dict = molecule_parser.parse_molecule(molecule=wrong_format_molecule)
 
     water = 'H2O'
     atoms_dict = molecule_parser.parse_molecule(molecule=water)
 
-    magnesium_hydroxide  = '(Mg3[T2(Y)](OH)2)'
+    magnesium_hydroxide = '(Mg3[T2(Y)](OH)2)'
     atoms_dict = molecule_parser.parse_molecule(molecule=magnesium_hydroxide)
 
     fremy_salt = 'K4[ON(SO3)2]2'

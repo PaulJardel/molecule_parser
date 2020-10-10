@@ -1,5 +1,3 @@
-import pytest
-
 from molecular.molecule_parser_alpha import MoleculeParserAlpha
 
 
@@ -14,10 +12,10 @@ def test__is_valid_parenthesis():
     fremy_salt = 'K4[ON(SO3)2]2'
     expected_fremy_salt = True
 
-    wrong_format_molecule_1  = "H(O"
+    wrong_format_molecule_1 = "H(O"
     expected_wrong_format_molecule_1 = False
 
-    wrong_format_molecule_2  = "(Mg3[T)]"
+    wrong_format_molecule_2 = "(Mg3[T)]"
     expected_wrong_format_molecule_2 = False
 
     # When

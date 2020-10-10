@@ -1,4 +1,4 @@
-SRC_PATH=./src
+SRC_PATH=./molecular
 TEST_PATH=./tests
 
 lint:
