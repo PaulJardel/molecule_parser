@@ -14,7 +14,11 @@ class MoleculeParserAlpha:
     """
 
     def parse_molecule(self, molecule: str) -> Dict[str, int]:
-
+        """
+        This method returns the dictionary of atoms for a specified molecule.
+        :param molecule: the molecule to parse
+        :return: the dictionary of atoms, containing the amount for each atom
+        """
         # check if the molecule has a valid format for parenthesis
         if not self._is_valid_parenthesis(molecule=molecule):
             logger.info(f"Molecule '{molecule}' has not a valid format.")
